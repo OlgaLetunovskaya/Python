@@ -1,0 +1,73 @@
+В данном коде нет синтаксических ошибок. Но есть несколько проблем с использованием класса.
+
+В определении каждого метода должен быть указан первый аргумент self, который ссылается на экземпляр класса. В данном случае, 
+это необходимо для доступа к методам и атрибутам класса.
+
+Класс должен быть определен до определения методов.
+
+1. Отсутствует конструктор класса (init), который обычно используется для инициализации атрибутов класса.
+
+2. В строке 19 файла string_utils.py обнаружены лишние скобки после оператора while.
+
+3. В строке 32 файла string_utils.py присутствуют лишние скобки после оператора if. 
+
+4. В строке 64 файла string_utils.py присутствуют лишние скобки после оператора if. 
+
+
+Правильное определение класса с учетом указанных проблем будет выглядеть следующим образом:
+
+class StringUtils:
+    def __init__(self):
+        pass
+    
+    def capitalize(self, string: str) -> str:
+        return string.capitalize()
+
+    def trim(self, string: str) -> str:
+        whitespace = " "
+        while string.startswith(whitespace):
+            string = string.removeprefix(whitespace)
+        return string
+
+    def to_list(self, string: str, delimiter = ",") -> list[str]:
+        if self.is_empty(string):
+            return []
+        return string.split(delimiter)
+
+    def contains(self, string: str, symbol: str) -> bool:
+        res = False
+        try:
+            res = string.index(symbol) > -1
+        except ValueError:
+            pass
+        return res
+    
+    def delete_symbol(self, string: str, symbol: str) -> str:
+        if self.contains(string, symbol):
+            string = string.replace(symbol, "") 
+        return string
+        
+    def starts_with(self, string: str, symbol: str) -> bool:
+        return string.startswith(symbol)
+
+    def end_with(self, string: str, symbol: str) -> bool:
+        return string.endswith(symbol)
+
+    def is_empty(self, string: str) -> bool:
+        string = self.trim(string)
+        return string == ""
+
+    def list_to_string(self, lst: list, joiner=", ") -> str:
+        string = ""
+        length = len(lst)
+    
+        if length == 0: 
+            return string 
+    
+        for i in range(0, length-1):
+            string += str(lst[i]) + joiner
+    
+        return string + str(lst[-1])
+Теперь код имеет правильную структуру класса и методов, и можем создать экземпляр класса и использовать его методы:
+
+
