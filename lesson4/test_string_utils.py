@@ -1,81 +1,64 @@
-import unittest
 from string_utils import StringUtils
-string_utils = StringUtils()
 
-class StringUtilsTests(unittest.TestCase):
 
-    def setUp(self):
-        self.utils = StringUtils()
+def test_capitalize():
+    str_util = StringUtils()
+    assert str_util.capitalize("hello") == "Hello"
+    assert str_util.capitalize("WORLD") == "World"
+    assert str_util.capitalize("123") == "123"
 
-    def test_capitalize_positive(self):
-        result = self.utils.capitalize("hello")
-        self.assertEqual(result, "Hello")
 
-    def test_capitalize_negative(self):
-        result = self.utils.capitalize("WORLD")
-        self.assertNotEqual(result, "WORLD")
+def test_trim():
+    str_util = StringUtils()
+    assert str_util.trim("  hello") == "hello"
+    assert str_util.trim("   world") == "world"
+    assert str_util.trim(" 123") == "123"
 
-def test_trim_positive(self):
-    result = self.utils.trim("  hello  ")
-    self.assertEqual(result, "hello")
 
-def test_trim_negative(self):
-    result = self.utils.trim("  hello  ")
-    self.assertNotEqual(result, "  hello")
+def test_to_list():
+    str_util = StringUtils()
+    assert str_util.to_list("hello,world") == ["hello", "world"]
+    assert str_util.to_list("1,2,3") == ["1", "2", "3"]
+    assert str_util.to_list("apple") == ["apple"]
 
-def test_to_list_positive(self):
-    result = self.utils.to_list("apple,banana,orange")
-    self.assertEqual(result, ["apple", "banana", "orange"])
 
-def test_to_list_negative(self):
-    result = self.utils.to_list("apple,banana,orange")
-    self.assertNotEqual(result, ["apple", "banana"])
+def test_contains():
+    str_util = StringUtils()
+    assert str_util.contains("hello world", "ll") == True
+    assert str_util.contains("12345", "6") == False
+    assert str_util.contains("abcabc", "b") == True
 
-def test_contains_positive(self):
-    result = self.utils.contains("hello world", "o")
-    self.assertTrue(result)
 
-def test_contains_negative(self):
-    result = self.utils.contains("hello world", "x")
-    self.assertFalse(result)
+def test_delete_symbol():
+    str_util = StringUtils()
+    assert str_util.delete_symbol("hello world", "o") == "hell wrld"
+    assert str_util.delete_symbol("abcabcabc", "c") == "ababab"
+    assert str_util.delete_symbol("12345", "6") == "12345"
 
-def test_delete_symbol_positive(self):
-    result = self.utils.delete_symbol("hello world", "o")
-    self.assertEqual(result, "hell wrld")
 
-def test_delete_symbol_negative(self):
-    result = self.utils.delete_symbol("hello world", "o")
-    self.assertNotEqual(result, "hello world")
+def test_starts_with():
+    str_util = StringUtils()
+    assert str_util.starts_with("hello world", "he") == True
+    assert str_util.starts_with("12345", "2") == False
+    assert str_util.starts_with("apple", "ap") == True
 
-def test_starts_with_positive(self):
-    result = self.utils.starts_with("hello world", "h")
-    self.assertTrue(result)
 
-def test_starts_with_negative(self):
-    result = self.utils.starts_with("hello world", "x")
-    self.assertFalse(result)
+def test_end_with():
+    str_util = StringUtils()
+    assert str_util.end_with("hello world", "ld") == True
+    assert str_util.end_with("12345", "2") == False
+    assert str_util.end_with("apple", "le") == True
 
-def test_end_with_positive(self):
-    result = self.utils.end_with("hello world", "d")
-    self.assertTrue(result)
 
-def test_end_with_negative(self):
-    result = self.utils.end_with("hello world", "x")
-    self.assertFalse(result)
+def test_is_empty():
+    str_util = StringUtils()
+    assert str_util.is_empty("") == True
+    assert str_util.is_empty("hello") == False
+    assert str_util.is_empty("  ") == True
 
-def test_is_empty_positive(self):
-    result = self.utils.is_empty("")
-    self.assertTrue(result)
 
-def test_is_empty_negative(self):
-    result = self.utils.is_empty("hello")
-    self.assertFalse(result)
-
-def test_list_to_string_positive(self):
-    result = self.utils.list_to_string(["apple", "banana", "orange"])
-    self.assertEqual(result, "apple, banana, orange")
-
-def test_list_to_string_negative(self):
-    result = self.utils.list_to_string(["apple", "banana", "orange"])
-    self.assertNotEqual(result, "apple, banana")
-
+def test_list_to_string():
+    str_util = StringUtils()
+    assert str_util.list_to_string(["apple", "banana", "cherry"]) == "apple, banana, cherry"
+    assert str_util.list_to_string(["1", "2", "3"], "-") == "1-2-3"
+    assert str_util.list_to_string(["hello world"]) == "hello world"
