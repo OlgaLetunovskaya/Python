@@ -1,0 +1,17 @@
+Задание 2. Локаторы Ozon
+
+Создайте файл ozon-locators.txt.
+Откройте сайт https://www.ozon.ru/ (браузер в режиме инкогнито).
+Запишите в файл локаторы для следующих элементов.
+Шаблон файла для заполнения:
+      
+       Локатор кнопки Войти - driver.find_element(By.CSS_SELECTOR,'d4155-a')
+
+       Локатор кнопки Заказы - driver.find_element(By.CSS_SELECTOR,"#div[class="d4155-a r5f"][data-widget="orderinfo"] a[class="aj7 d7o"]")
+        
+       Локатор ссылки OZON Job (в футере) - driver.find_element(By.CSS_SELECTOR,'a[rel="noopener"]')
+
+       Локатор выбора валюты (верхний левый угол страницы) - driver.find_element(By.CSS_SELECTOR,'ga28-a2 tsBodyControl400Small')
+
+       Локатор выпадашки Везде (в поисковой строке) - driver.find_element_by_xpath("//*[@id="stickyHeader"]/div[2]/div/div/form/div/div[1]/span[1]")
+
