@@ -11,7 +11,7 @@ driver = webdriver.Chrome()
 driver.get("http://the-internet.herokuapp.com/entry_ad")
 
 # В модальном окне нажимаем на кнопку `Сlose`.
-modal_close_button = (WebDriverWait(driver, 10).until
+modal_close_button = (WebDriverWait(driver, 30).until
     (EC.presence_of_element_located((By.CLASS_NAME, "modal-footer"))))
 close_button = modal_close_button.find_element(By.TAG_NAME, "p")
 close_button.click()
@@ -34,11 +34,11 @@ service = FirefoxService(executable_path = GeckoDriverManager().install())
 driver = webdriver.Firefox(service = service)
 
 # Открваем страницу http://the-internet.herokuapp.com/entry_ad.
-driver = webdriver.Firefox(service = service)
+
 driver.get("http://the-internet.herokuapp.com/entry_ad")
 
 # В модальном окне нажимаем на кнопку `Сlose`.
-modal_close_button = (WebDriverWait(driver, 10).until
+modal_close_button = (WebDriverWait(driver, 30).until
     (EC.presence_of_element_located((By.CLASS_NAME, "modal-footer"))))
 close_button = modal_close_button.find_element(By.TAG_NAME, "p")
 close_button.click()
