@@ -14,9 +14,11 @@ driver.get("http://the-internet.herokuapp.com/entry_ad")
 modal_close_button = (WebDriverWait(driver, 30).until
     (EC.presence_of_element_located((By.CLASS_NAME, "modal-footer"))))
 close_button = modal_close_button.find_element(By.TAG_NAME, "p")
+
+time.sleep(1)
 close_button.click()
 
-time.sleep(2)
+time.sleep(1)
 
 driver.quit()
 
@@ -41,8 +43,10 @@ driver.get("http://the-internet.herokuapp.com/entry_ad")
 modal_close_button = (WebDriverWait(driver, 30).until
     (EC.presence_of_element_located((By.CLASS_NAME, "modal-footer"))))
 close_button = modal_close_button.find_element(By.TAG_NAME, "p")
+
+time.sleep(1)
 close_button.click()
 
-time.sleep(2)
+time.sleep(1)
 
 driver.quit()
