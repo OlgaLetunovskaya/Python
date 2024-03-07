@@ -1,11 +1,8 @@
-
-
 #**Задание 8. Форма авторизации**
 
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
 
 #Откройте страницу http://the-internet.herokuapp.com/login.
 driver = webdriver.Chrome()
@@ -17,7 +14,7 @@ username_field.send_keys("tomsmith")
 
 #В поле password введите значение `SuperSecretPassword!`.
 password_field = driver.find_element(By.ID,"password")
-password_field.send_keys("supersecretpassword!")
+password_field.send_keys("SuperSecretPassword!")
 
 #Нажмите кнопку `Login`.
 login_button = driver.find_element(By.CSS_SELECTOR,"button[type='submit']")
@@ -47,7 +44,7 @@ username_field.send_keys("tomsmith")
 
 #В поле password введите значение `SuperSecretPassword!`.
 password_field = driver.find_element(By.ID,"password")
-password_field.send_keys("supersecretpassword!")
+password_field.send_keys("SuperSecretPassword!")
 
 #Нажмите кнопку `Login`.
 login_button = driver.find_element(By.CSS_SELECTOR,"button[type='submit']")
