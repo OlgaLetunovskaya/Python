@@ -11,11 +11,14 @@ driver = webdriver.Chrome()
 driver.get("https://bonigarcia.dev/selenium-webdriver-java/loading-images.html")
 
 # Дождитесь загрузки всех картинок.
-image = WebDriverWait(driver, 30).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, "#image-container")))
+image = WebDriverWait(driver, 10).until(
+    EC.presence_of_all_elements_located((By.TAG_NAME, "img")))
 
 # Получите значение атрибута `src` у 3-й картинки.
-src = driver.find_element(By.CSS_SELECTOR, "#image-container").get_attribute('#award')
+third_image_src = driver.find_elements(By.TAG_NAME, "img")[2].get_attribute("src")
 
 # Выведите значение в консоль.
-print(src)
+print(third_image_src)
+
+
+driver.quit()
