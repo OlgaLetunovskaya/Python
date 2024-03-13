@@ -9,7 +9,7 @@ driver.implicitly_wait(25)
 driver.get("http://uitestingplayground.com/ajax")
 
 # Нажать на синюю кнопку.
-blue_bt_click=driver.find_element(By.CSS_SELECTOR,"#ajaxButton").click()
+blue_bt_click = driver.find_element(By.CSS_SELECTOR,"#ajaxButton").click()
 
 # Получить текст из зеленой плашки.
 content = driver.find_element(By.CSS_SELECTOR, "#content")
