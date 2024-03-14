@@ -12,8 +12,7 @@ driver.get("https://bonigarcia.dev/selenium-webdriver-java/loading-images.html")
 
 # Дождитесь загрузки всех картинок.
 image = WebDriverWait(driver, 10).until(
-    EC.presence_of_all_elements_located((By.TAG_NAME, "img")))
-
+    EC.text_to_be_present_in_element((By.ID, "text"), 'Done!'))
 # Получите значение атрибута `src` у 3-й картинки.
 third_image_src = driver.find_elements(By.TAG_NAME, "img")[2].get_attribute("src")
 
