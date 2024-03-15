@@ -18,55 +18,40 @@
 # Проверьте, что итоговая сумма равна **$58.29.**
 
 import pytest
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 
-@pytest.fixture
-def browser():
-    driver = webdriver.Chrome()
-    yield driver
+driver = webdriver.Chrome()
+
+def login():
+    driver.get('https://www.saucedemo.com/inventory.html')
+    driver.find_element(By.ID,'user-name').send_keys('standart_user').click()
+    driver.find_element(By.ID, 'password').send_keys('secret_sause').click()
+    driver.find_element(By.ID, 'login-button').click()
+
+def test_add_to_card():
+    login()
+
+    driver.find_element(By.CLASS_NAME, '.inventory_item_name').click()
+    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
+    driver.find_element(By.ID, 'item_1_title_link').click()
+    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
+    driver.find_element(By.ID, 'item_2_title_link').click()
+    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
+
+    driver.find_element(By.ID, 'shopping_cart_container').click()
+    driver.find_element(By.ID, 'checkout').click()
+
+    driver.find_element(By.ID, 'first-name').send_keys('John').click()
+    driver.find_element(By.ID, 'last-name').send_keys('Doe').click()
+    driver.find_element(By.ID, 'postal-code').send_keys('12345').click()
+    driver.find_element(By.ID, 'continue').click()
+
+    time.sleep(2)
+
+    total = driver.find_element(By.CLASS_NAME,'.summary_info_label').text
+    assert total == '$58.29'
+
     driver.quit()
-
-def test_shopping_cart(browser):
-    browser.get("https://www.saucedemo.com/")
-
-
-    username_input = browser.find_element(By.ID, "user-name")
-    username_input.send_keys("standard_user")
-    password_input = browser.find_element(By.ID, "password")
-    password_input.send_keys("secret_sauce")
-    login_button = browser.find_element(By.ID, "login-button")
-    login_button.click()
-
-
-    products = ["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt", "Sauce Labs Onesie"]
-    for product in products:
-        add_to_cart_button = browser.find_element(By.XPATH, f"//div[text()='{product}']/following-sibling::div/button")
-        add_to_cart_button.click()
-
-
-    cart_button = browser.find_element(By.CLASS_NAME, "shopping_cart_link")
-    cart_button.click()
-
-
-    checkout_button = browser.find_element(By.XPATH, "//a[text()='CHECKOUT']")
-    checkout_button.click()
-
-
-    first_name_input = browser.find_element(By.ID, "first-name")
-    first_name_input.send_keys("John")
-    last_name_input = browser.find_element(By.ID, "last-name")
-    last_name_input.send_keys("Doe")
-    postal_code_input = browser.find_element(By.ID, "postal-code")
-    postal_code_input.send_keys("12345")
-
-
-    continue_button = browser.find_element(By.XPATH, "//input[@type='submit']")
-    continue_button.click()
-
-
-    total_amount = browser.find_element(By.CLASS_NAME, "summary_total_label").text
-
-    assert total_amount == "$58.29"
