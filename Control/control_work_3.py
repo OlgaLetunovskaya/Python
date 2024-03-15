@@ -34,15 +34,16 @@ def login():
 def test_add_to_card():
     login()
 
-    driver.find_element(By.CLASS_NAME, '.inventory_item_name').click()
-    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
-    driver.find_element(By.ID, 'item_1_title_link').click()
-    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
-    driver.find_element(By.ID, 'item_2_title_link').click()
-    driver.find_element(By.CLASS_NAME, '.btn-primary').click()
+    driver.find_element_by_css_selector("[data-test='add-to-cart-sauce-labs-backpack']").click()
+    driver.find_element_by_css_selector("[data-test='add-to-cart-sauce-labs-bolt-t-shirt']").click()
+    driver.find_element_by_css_selector("[data-test='add-to-cart-sauce-labs-onesie']").click()
 
-    driver.find_element(By.ID, 'shopping_cart_container').click()
-    driver.find_element(By.ID, 'checkout').click()
+    time.sleep(2)
+    cart_button = driver.find_element_by_css_selector("[data-test='shopping-cart']")
+    cart_button.click()
+
+    checkout_button = driver.find_element_by_css_selector("[data-test='checkout']")
+    checkout_button.click()
 
     driver.find_element(By.ID, 'first-name').send_keys('John').click()
     driver.find_element(By.ID, 'last-name').send_keys('Doe').click()
