@@ -20,8 +20,8 @@
 
 import pytest
 from selenium import webdriver
-from pages.DataFormPage import DataFormPage
-from pages.ValidationPage import ValidationPage
+from DataFormPage import DataFormPage
+from ValidationPage import ValidationPage
 
 @pytest.fixture
 def browser():
