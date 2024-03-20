@@ -19,9 +19,9 @@
 
 
 import pytest
-from pages.LoginPage import LoginPage
-from pages.InventoryPage import InventoryPage
-from pages.CartPage import CartPage
+from LoginPage import LoginPage
+from InventoryPage import InventoryPage
+from CartPage import CartPage
 
 @pytest.fixture
 def browser():
