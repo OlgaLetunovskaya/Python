@@ -12,7 +12,7 @@
 # Проверьте (assert), что в окне отобразится результат `15` через 45 секунд.
 
 import pytest
-from pages.CalculatorPage import CalculatorPage
+from CalculatorPage import CalculatorPage
 
 @pytest.fixture
 def browser():
