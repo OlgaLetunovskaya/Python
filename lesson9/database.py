@@ -8,9 +8,9 @@ def db_session():
     yield session
     session.rollback()  # откатываем изменения после выполнения теста
     session.close()
-
-def test_add_employee(employee_api, db_session):
-     # Создание тестовых данных через БД
+    
+ # Создание тестовых данных через БД
+def test_add_employee(employee_api, db_session):    
     new_test_employee = {
         "id": 22,
         "firstName": "Olga",
