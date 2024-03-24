@@ -6,7 +6,7 @@ DATABASE_URL = "postgres://x_clients_user:x7ngHjC1h08a85bELNifgKmqZa8KIR40@dpg-c
 def db_session():
     session = get_db_session(DATABASE_URL)
     yield session
-    session.rollback()  # откатываем изменения после выполнения теста
+    session.rollback() 
     session.close()
 
 def test_add_employee(employee_api, db_session):
