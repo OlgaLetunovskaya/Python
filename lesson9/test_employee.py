@@ -1,48 +1,31 @@
 import pytest
-from database import get_db_session, Employee
+from faker import Faker
+from database import get_db_connection, add_employee, delete_employee
 
-DATABASE_URL = "postgres://x_clients_user:x7ngHjC1h08a85bELNifgKmqZa8KIR40@dpg-cn1542en7f5s73fdrigg-a.frankfurt-postgres.render.com/x_clients_xxet"
+faker = Faker()
+
 @pytest.fixture(scope="function")
-def db_session():
-    session = get_db_session(DATABASE_URL)
-    yield session
-    session.rollback() 
-    session.close()
+def db_connection():
+    connection = get_db_connection()
+    yield connection
+    connection.close()
 
-def test_add_employee(employee_api, db_session):
-     # Создание тестовых данных через БД
-    new_test_employee = {
-        "id": 22,
-        "firstName": "Olga",
-        "lastName": "Leto",
+@pytest.fixture(scope="function")
+def fake_employee_data():
+    return {
+        "id": faker.random_int(min=1, max=9999),
+        "firstName": faker.first_name(),
+        "lastName": faker.last_name(),
     }
-    db_session.add(new_test_employee)
-    db_session.commit()
 
-    # Получение списка сотрудников до добавления
-    old_list = employee_api.get_employees().json()
+def test_add_employee(employee_api, db_connection, fake_employee_data):
+    # Добавление нового сотрудника
+    add_employee(db_connection, fake_employee_data)
 
-    # Данные для нового сотрудника
-    new_employee = {
-        "id": 23,
-        "firstName": "Olga",
-        "lastName": "Leto",
-    }
-    add_response = employee_api.add_employee(new_employee)
-    assert add_response.status_code == 200
-    new_employee_id = add_response.json()['id']
+    # Получение и проверка данных нового сотрудника
+    employee_data = employee_api.get_employee(fake_employee_data['id']).json()
+    assert employee_data['firstName'] == fake_employee_data['firstName']
+    assert employee_data['lastName'] == fake_employee_data['lastName']
 
-    # Получение списка сотрудников после добавления
-    new_list = employee_api.get_employees().json()
-
-    # Проверка увеличения количества сотрудников
-    assert len(new_list) == len(old_list) + 1
-
-    # Получение данных нового сотрудника и проверка его данных
-    created_employee = employee_api.get_employee(new_employee_id).json()
-    assert created_employee['firstname'] == new_employee['firstname']
-    assert created_employee['lastname'] == new_employee['lastname']
-
-    # Удаление созданных тестовых данных
-    db_session.delete(new_test_employee)
-    db_session.commit()
+    # Удаление созданного сотрудника после теста
+    delete_employee(db_connection, fake_employee_data['id'])
