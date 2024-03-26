@@ -40,8 +40,8 @@ def test_add_employee(employee_api, db_session):
 
     # Получение данных нового сотрудника и проверка его данных
     created_employee = employee_api.get_employee(new_employee_id).json()
-    assert created_employee['name'] == new_employee['name']
-    assert created_employee['position'] == new_employee['position']
+    assert created_employee['firstname'] == new_employee['firstname']
+    assert created_employee['lastname'] == new_employee['lastname']
 
     # Удаление созданных тестовых данных
     db_session.delete(new_test_employee)
