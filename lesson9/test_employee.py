@@ -1,14 +1,15 @@
 import pytest
 from faker import Faker
-from database import get_db_connection, add_employee, delete_employee
+from sqlalchemy.orm import close_all_sessions
+from database import get_db_session, add_employee, delete_employee, Employee
 
 faker = Faker()
 
 @pytest.fixture(scope="function")
-def db_connection():
-    connection = get_db_connection()
-    yield connection
-    connection.close()
+def db_session():
+    session = get_db_session()
+    yield session
+    close_all_sessions()
 
 @pytest.fixture(scope="function")
 def fake_employee_data():
@@ -18,14 +19,18 @@ def fake_employee_data():
         "lastName": faker.last_name(),
     }
 
-def test_add_employee(employee_api, db_connection, fake_employee_data):
+def test_add_and_delete_employee(db_session, fake_employee_data):
     # Добавление нового сотрудника
-    add_employee(db_connection, fake_employee_data)
+    add_employee(db_session, fake_employee_data)
 
     # Получение и проверка данных нового сотрудника
-    employee_data = employee_api.get_employee(fake_employee_data['id']).json()
-    assert employee_data['firstName'] == fake_employee_data['firstName']
-    assert employee_data['lastName'] == fake_employee_data['lastName']
+    employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+    assert employee_data.first_name == fake_employee_data['firstName']
+    assert employee_data.last_name == fake_employee_data['lastName']
 
     # Удаление созданного сотрудника после теста
-    delete_employee(db_connection, fake_employee_data['id'])
+    delete_employee(db_session, fake_employee_data['id'])
+
+    # Проверка, что сотрудник удалён
+    employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+    assert employee_data is None
