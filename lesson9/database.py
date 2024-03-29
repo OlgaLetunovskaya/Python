@@ -1,22 +1,30 @@
-import psycopg2
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgres://x_clients_user:x7ngHjC1h08a85bELNifgKmqZa8KIR40@dpg-cn1542en7f5s73fdrigg-a.frankfurt-postgres.render.com/x_clients_xxet"
+Base = declarative_base()
 
-def get_db_connection(database_url=DATABASE_URL):
-    return psycopg2.connect(database_url)
+class Employee(Base):
+    __tablename__ = 'employees'
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String)
+    last_name = Column(String)
 
-def add_employee(connection, employee_data):
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "INSERT INTO employees (id, first_name, last_name) VALUES (%s, %s, %s)",
-            (employee_data['id'], employee_data['firstName'], employee_data['lastName'])
-        )
-        connection.commit()
+DATABASE_URL = "postgresql+psycopg2://x_clients_user:x7ngHjC1h08a85bELNifgKmqZa8KIR40@dpg-cn1542en7f5s73fdrigg-a.frankfurt-postgres.render.com/x_clients_xxet"
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
 
-def delete_employee(connection, employee_id):
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "DELETE FROM employees WHERE id = %s",
-            (employee_id,)
-        )
-        connection.commit()
+def get_db_session():
+    session = Session()
+    return session
+
+def add_employee(session, employee_data):
+    new_employee = Employee(id=employee_data['id'], first_name=employee_data['firstName'], last_name=employee_data['lastName'])
+    session.add(new_employee)
+    session.commit()
+
+def delete_employee(session, employee_id):
+    employee_to_delete = session.query(Employee).filter(Employee.id == employee_id).first()
+    if employee_to_delete:
+        session.delete(employee_to_delete)
+        session.commit()
