@@ -1,4 +1,6 @@
 import pytest
+from database import engine
+from database import Session
 from faker import Faker
 from sqlalchemy.orm import close_all_sessions
 from database import get_db_session, add_employee, delete_employee, Employee
@@ -6,11 +8,17 @@ from database import get_db_session, add_employee, delete_employee, Employee
 faker = Faker()
 
 @pytest.fixture(scope="function")
-def db_session():
-    session = get_db_session()
-    yield session
-    close_all_sessions()
 
+def db_session():
+    connection = engine.connect()
+    transaction = connection.begin()
+    session = Session(bind=connection)
+
+    yield session
+
+    session.close()
+    transaction.rollback()
+    connection.close()
 @pytest.fixture(scope="function")
 def fake_employee_data():
     return {
