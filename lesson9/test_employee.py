@@ -42,3 +42,33 @@ def test_add_and_delete_employee(db_session, fake_employee_data):
     # Проверка, что сотрудник удалён
     employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
     assert employee_data is None
+    
+def test_update_employee(db_session, fake_employee_data):
+    # Добавление нового сотрудника
+    add_employee(db_session, fake_employee_data)
+
+    # Получение и проверка данных нового сотрудника
+    employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+    assert employee_data.first_name == fake_employee_data['firstName']
+    assert employee_data.last_name == fake_employee_data['lastName']
+
+    # Новые данные для обновления сотрудника
+    new_employee_data = {
+        "firstName": faker.first_name(),
+        "lastName": faker.last_name(),
+    }
+
+    # Обновление данных сотрудника
+    update_employee(db_session, fake_employee_data['id'], new_employee_data)
+
+    # Получение и проверка обновленных данных сотрудника
+    updated_employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+    assert updated_employee_data.first_name == new_employee_data['firstName']
+    assert updated_employee_data.last_name == new_employee_data['lastName']
+
+    # Удаление созданного сотрудника после теста
+    delete_employee(db_session, fake_employee_data['id'])
+
+    # Проверка, что сотрудник удален
+    employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+    assert employee_data is None
