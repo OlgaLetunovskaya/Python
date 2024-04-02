@@ -28,7 +28,7 @@ def fake_employee_data():
     }
 
 def test_add_and_delete_employee(db_session, fake_employee_data):
-    # Добавление нового сотрудника
+    # Добавление и удаление нового сотрудника
     add_employee(db_session, fake_employee_data)
 
     # Получение и проверка данных нового сотрудника
