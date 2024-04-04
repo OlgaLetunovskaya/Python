@@ -1,8 +1,8 @@
 import pytest
-from pages.LoginPage import LoginPage
-from pages.InventoryPage import InventoryPage
-from pages.CartPage import CartPage
 import allure
+from LoginPage import LoginPage
+from InventoryPage import InventoryPage
+from CartPage import CartPage
 
 @pytest.fixture
 def browser():
@@ -16,17 +16,22 @@ def test(browser):
     login_page = LoginPage(browser)
     login_page.open()
 
-    inventory_page = InventoryPage(browser)
-    inventory_page.add_item_to_cart("Sauce Labs Backpack")
-    inventory_page.add_item_to_cart("Sauce Labs Bolt T-Shirt")
-    inventory_page.add_item_to_cart("Sauce Labs Onesie")
+    with allure.step("Добавление товаров в корзину"):
+        inventory_page = InventoryPage(browser)
+        inventory_page.add_item_to_cart("Sauce Labs Backpack")
+        inventory_page.add_item_to_cart("Sauce Labs Bolt T-Shirt")
+        inventory_page.add_item_to_cart("Sauce Labs Onesie")
 
-    inventory_page.go_to_cart()
+    with allure.step("Переход в корзину"):
+        inventory_page.go_to_cart()
 
-    cart_page = CartPage(browser)
-    cart_page.checkout()
+    with allure.step("Оформление заказа"):
+        cart_page = CartPage(browser)
+        cart_page.checkout()
 
-    cart_page.fill_out_form("John", "Doe", "12345")
+    with allure.step("Заполнение данных формы"):
+        cart_page.fill_out_form("John", "Doe", "12345")
 
-    total_price = cart_page.get_total_price()
-    assert total_price == "$58.
+    with allure.step("Проверка общей стоимости"):
+        total_price = cart_page.get_total_price()
+        assert total_price == "$58"
