@@ -92,4 +92,8 @@ def test_update_employee(db_session, fake_employee_data):
         assert updated_employee_data.last_name == new_employee_data['lastName']
 
     with allure.step("Удаление сотрудника"):
-        delete
+        delete_employee(db_session, fake_employee_data['id'])
+
+    with allure.step("Проверка удаления сотрудника"):
+        employee_data = db_session.query(Employee).filter(Employee.id == fake_employee_data['id']).first()
+        assert employee_data is None
